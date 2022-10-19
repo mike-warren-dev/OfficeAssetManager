@@ -24,7 +24,20 @@ namespace OfficeAssetManager.Controllers
         {
             var query = from Employee in _context.Employees
                         where Employee.EmployeeId == employeeId
-                        select Employee;
+                        //join AssetAssignment in _context.AssetAssignments 
+                        //    on Employee.EmployeeId equals AssetAssignment.EmployeeId
+                        //join Asset in _context.Assets
+                        //    on AssetAssignment.AssetId equals Asset.AssetId
+                        select new Employee
+                        {
+                            EmployeeId = Employee.EmployeeId,
+                            ExternalSystemId = Employee.ExternalSystemId,
+                            DisplayName = Employee.DisplayName,
+                            FirstName = Employee.FirstName,
+                            LastName = Employee.LastName,
+                            SiteId = Employee.SiteId,
+                            AssetAssignments = Employee.AssetAssignments
+                        };
 
             IEnumerable<Employee> result = query;
 
