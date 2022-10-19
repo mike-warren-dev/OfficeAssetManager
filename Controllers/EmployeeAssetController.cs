@@ -10,7 +10,7 @@ namespace OfficeAssetManager.Controllers
     {
         private readonly OfficeAssetManagementContext _context;
 
-        public EmployeeAssetController(ILogger<WeatherForecastController> logger, OfficeAssetManagementContext context)
+        public EmployeeAssetController(OfficeAssetManagementContext context)
         {
             _context = context;
         }
