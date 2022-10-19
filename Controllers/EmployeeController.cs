@@ -9,12 +9,10 @@ namespace OfficeAssetManager.Controllers
     [ApiController]
     public class EmployeeController : ControllerBase
     {
-        private readonly ILogger<WeatherForecastController> _logger;
         private readonly OfficeAssetManagementContext _context;
 
-        public EmployeeController(ILogger<WeatherForecastController> logger, OfficeAssetManagementContext context)
+        public EmployeeController(OfficeAssetManagementContext context)
         {
-            _logger = logger;
             _context = context;
         }
 
