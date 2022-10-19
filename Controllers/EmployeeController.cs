@@ -20,28 +20,24 @@ namespace OfficeAssetManager.Controllers
 
         // GET: api/Employee/{employeeId}
         [HttpGet("{employeeId}")]
-        public IEnumerable<Employee> Get(int employeeId)
+        public IActionResult Get(int employeeId)
         {
-            var query = from Employee in _context.Employees
-                        where Employee.EmployeeId == employeeId
-                        //join AssetAssignment in _context.AssetAssignments 
-                        //    on Employee.EmployeeId equals AssetAssignment.EmployeeId
-                        //join Asset in _context.Assets
-                        //    on AssetAssignment.AssetId equals Asset.AssetId
-                        select new Employee
+            var query = from ee in _context.Employees
+                        where ee.EmployeeId == employeeId
+                        join dv in _context.DictionaryValues
+                            on ee.SiteId equals dv.ValueId
+                        select new EmployeeDTO
                         {
-                            EmployeeId = Employee.EmployeeId,
-                            ExternalSystemId = Employee.ExternalSystemId,
-                            DisplayName = Employee.DisplayName,
-                            FirstName = Employee.FirstName,
-                            LastName = Employee.LastName,
-                            SiteId = Employee.SiteId,
-                            AssetAssignments = Employee.AssetAssignments
+                            EmployeeId = ee.EmployeeId,
+                            ExternalSystemId = ee.ExternalSystemId,
+                            DisplayName = ee.DisplayName,
+                            SiteName = dv.DisplayName
                         };
 
-            IEnumerable<Employee> result = query;
+            IEnumerable<EmployeeDTO> result = query;
 
-            return result;
+
+            return (query.Any()) ? Ok(result) : NoContent();
         }
     }
 }
