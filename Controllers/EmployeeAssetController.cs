@@ -15,28 +15,35 @@ namespace OfficeAssetManager.Controllers
             _context = context;
         }
 
+
+        /// <summary>
+        /// This is my description of Employee get
+        /// </summary>
+        /// <param name="employeeId"></param>
+        /// <returns>This is what it returns</returns>
         // GET: api/Employee/{employeeId}/Assets
         [HttpGet]
         public IActionResult Get(int employeeId)
         {
-            var nameQuery = _context.Employees.Where(ee => ee.EmployeeId == employeeId).Select(ee => ee.DisplayName).FirstOrDefault();
+            var employee = _context.Employees.Where(ee => ee.EmployeeId == employeeId).Any();
 
-            if (nameQuery == null) return NoContent();
+            if (!employee) return NoContent();
 
-            var query = from AssetAssignment in _context.AssetAssignments
-                        where AssetAssignment.EmployeeId == employeeId
+            var result = (from map in _context.AssetAssignments
+                        where map.EmployeeId == employeeId
+                        join ee in _context.Employees
+                            on map.EmployeeId equals ee.EmployeeId
+                        let foo = ee.EmployeeId
                         join Asset in _context.Assets
-                            on AssetAssignment.AssetId equals Asset.AssetId
+                            on map.AssetId equals Asset.AssetId
                         join dv in _context.DictionaryValues
                             on Asset.AssetTypeId equals dv.ValueId
                         select new AssetDTO
                         {
-                            AssetId = Asset.AssetId,
                             Guid = Asset.Guid,
-                            AssetTypeDisplayName = dv.DisplayName
-                        };
-            
-            EmployeeAssetDTO result = new() { EmployeeDisplayName = nameQuery ,Assets = query.ToList<AssetDTO>() };
+                            AssetTypeDisplayName = dv.DisplayName,
+                            AssignedTo = ee.DisplayName
+                        }).ToList<AssetDTO>();
 
             return Ok(result);
         }
