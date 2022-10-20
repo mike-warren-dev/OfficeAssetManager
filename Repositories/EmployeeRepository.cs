@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace OfficeAssetManager.Repositories;
 
-public class EmployeeRepository : IEmployeeRepository, IDisposable
+public class EmployeeRepository : IEmployeeRepository
 {
     private OfficeAssetManagementContext _context;
 
@@ -61,9 +61,4 @@ public class EmployeeRepository : IEmployeeRepository, IDisposable
         this.disposed = true;
     }
 
-    public void Dispose()
-    {
-        Dispose(true);
-        GC.SuppressFinalize(this);
-    }
 }

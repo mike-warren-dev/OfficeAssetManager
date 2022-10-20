@@ -22,21 +22,23 @@ public class AssetController : ControllerBase
     public IActionResult Get(Guid guid)
     {
 
-        var result = (from a in _context.Assets
-                      where a.Guid == guid
-                      join dv in _context.DictionaryValues
-                          on a.AssetTypeId equals dv.ValueId
-                      join map in _context.AssetAssignments
-                          on a.AssetId equals map.AssetId
-                      join ee in _context.Employees
-                          on map.EmployeeId equals ee.EmployeeId
-                      select new AssetDTO
-                      {
-                          Guid = guid,
-                          AssetTypeDisplayName = dv.DisplayName,
-                          AssignedTo = ee.DisplayName
-                      }).FirstOrDefault();
+        //var result = (from a in _context.Assets
+        //              where a.Guid == guid
+        //              join dv in _context.DictionaryValues
+        //                  on a.AssetTypeId equals dv.ValueId
+        //              join map in _context.AssetAssignments
+        //                  on a.AssetId equals map.AssetId
+        //              join ee in _context.Employees
+        //                  on map.EmployeeId equals ee.EmployeeId
+        //              select new AssetDTO
+        //              {
+        //                  Guid = guid,
+        //                  AssetTypeDisplayName = dv.DisplayName,
+        //                  AssignedTo = ee.DisplayName
+        //              }).FirstOrDefault();
 
-        return (result == null) ? NoContent() : Ok(result);
+        //return (result == null) ? NoContent() : Ok(result);
+
+        return Ok();
     }
 }
