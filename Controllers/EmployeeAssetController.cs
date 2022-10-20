@@ -15,12 +15,6 @@ namespace OfficeAssetManager.Controllers
             _context = context;
         }
 
-
-        /// <summary>
-        /// This is my description of Employee get
-        /// </summary>
-        /// <param name="employeeId"></param>
-        /// <returns>This is what it returns</returns>
         // GET: api/Employee/{employeeId}/Assets
         [HttpGet]
         public IActionResult Get(int employeeId)

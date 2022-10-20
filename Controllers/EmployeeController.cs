@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OfficeAssetManager.Models;
+using OfficeAssetManager.Repositories;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -9,32 +10,35 @@ namespace OfficeAssetManager.Controllers;
 [ApiController]
 public class EmployeeController : ControllerBase
 {
-    private readonly OfficeAssetManagementContext _context;
+    private readonly IEmployeeRepository _repository;
 
-    public EmployeeController(OfficeAssetManagementContext context)
+    public EmployeeController(IEmployeeRepository repository)
     {
-        _context = context;
+        _repository = repository;
     }
 
-    // GET: api/Employee/{employeeId}
-    [HttpGet("{employeeId}")]
-    public IActionResult Get(int employeeId)
+    // GET: api/Employee/GetEmployeeById/{employeeId}
+    [HttpGet("GetEmployeeById/{employeeId}")]
+    public IActionResult GetEmployeeById(int employeeId)
     {
-        var query = from ee in _context.Employees
-                    where ee.EmployeeId == employeeId
-                    join dv in _context.DictionaryValues
-                        on ee.SiteId equals dv.ValueId
-                    select new EmployeeDTO
-                    {
-                        EmployeeId = ee.EmployeeId,
-                        ExternalSystemId = ee.ExternalSystemId,
-                        DisplayName = ee.DisplayName,
-                        SiteName = dv.DisplayName
-                    };
+        //var query = from ee in _context.Employees
+        //            where ee.EmployeeId == employeeId
+        //            join dv in _context.DictionaryValues
+        //                on ee.SiteId equals dv.ValueId
+        //            select new EmployeeDTO
+        //            {
+        //                EmployeeId = ee.EmployeeId,
+        //                ExternalSystemId = ee.ExternalSystemId,
+        //                DisplayName = ee.DisplayName,
+        //                SiteName = dv.DisplayName
+        //            };
 
-        IEnumerable<EmployeeDTO> result = query;
+        //IEnumerable<EmployeeDTO> result = query;
 
+        //return (query.Any()) ? Ok(result) : NoContent();
 
-        return (query.Any()) ? Ok(result) : NoContent();
+        Employee employee = _repository.GetEmployeeById(employeeId);
+
+        return (employee == null) ? NoContent() : Ok(employee);
     }
 }
