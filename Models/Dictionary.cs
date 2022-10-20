@@ -1,14 +1,19 @@
-﻿namespace OfficeAssetManager.Models;
+﻿using System;
+using System.Collections.Generic;
 
-public partial class Dictionary
+namespace OfficeAssetManager.Models
 {
-    public Dictionary()
+    public partial class Dictionary
     {
-        DictionaryValues = new HashSet<DictionaryValue>();
+        public Dictionary()
+        {
+            DictionaryValues = new HashSet<DictionaryValue>();
+        }
+
+        public int DictionaryId { get; set; }
+        public string DisplayName { get; set; } = null!;
+        public string Description { get; set; } = null!;
+
+        public virtual ICollection<DictionaryValue> DictionaryValues { get; set; }
     }
-
-    public int DictionaryId { get; set; }
-    public string? DisplayName { get; set; }
-
-    public virtual ICollection<DictionaryValue> DictionaryValues { get; set; }
 }
