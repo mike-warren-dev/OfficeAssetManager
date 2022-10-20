@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Data;
-using OfficeAssetManager.Models;
+﻿using OfficeAssetManager.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace OfficeAssetManager.Repositories;
