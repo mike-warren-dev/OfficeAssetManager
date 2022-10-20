@@ -17,10 +17,10 @@ namespace OfficeAssetManager.Models
         }
 
         public virtual DbSet<Asset> Assets { get; set; } = null!;
-        public virtual DbSet<AssetAssignment> AssetAssignments { get; set; } = null!;
         public virtual DbSet<Dictionary> Dictionaries { get; set; } = null!;
         public virtual DbSet<DictionaryValue> DictionaryValues { get; set; } = null!;
         public virtual DbSet<Employee> Employees { get; set; } = null!;
+        public virtual DbSet<TempAsset> TempAssets { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -45,34 +45,16 @@ namespace OfficeAssetManager.Models
 
                 entity.Property(e => e.AssetTypeId).HasColumnName("AssetTypeID");
 
+                entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
+
                 entity.Property(e => e.Guid).HasColumnName("GUID");
 
                 entity.Property(e => e.RemovedBy).HasMaxLength(150);
-            });
-
-            modelBuilder.Entity<AssetAssignment>(entity =>
-            {
-                entity.ToTable("AssetAssignment");
-
-                entity.Property(e => e.AssetAssignmentId).HasColumnName("AssetAssignmentID");
-
-                entity.Property(e => e.AddedBy).HasMaxLength(150);
-
-                entity.Property(e => e.AssetId).HasColumnName("AssetID");
-
-                entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
-
-                entity.Property(e => e.RemovedBy).HasMaxLength(150);
-
-                entity.HasOne(d => d.Asset)
-                    .WithMany(p => p.AssetAssignments)
-                    .HasForeignKey(d => d.AssetId)
-                    .HasConstraintName("FK__AssetAssi__Asset__66603565");
 
                 entity.HasOne(d => d.Employee)
-                    .WithMany(p => p.AssetAssignments)
+                    .WithMany(p => p.Assets)
                     .HasForeignKey(d => d.EmployeeId)
-                    .HasConstraintName("FK__AssetAssi__Emplo__656C112C");
+                    .HasConstraintName("FK__Asset__EmployeeI__6A30C649");
             });
 
             modelBuilder.Entity<Dictionary>(entity =>
@@ -116,6 +98,19 @@ namespace OfficeAssetManager.Models
                 entity.Property(e => e.FirstName).HasMaxLength(75);
 
                 entity.Property(e => e.LastName).HasMaxLength(75);
+            });
+
+            modelBuilder.Entity<TempAsset>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("tempAssets");
+
+                entity.Property(e => e.AddedBy).HasMaxLength(150);
+
+                entity.Property(e => e.Guid).HasColumnName("GUID");
+
+                entity.Property(e => e.RemovedBy).HasMaxLength(150);
             });
 
             OnModelCreatingPartial(modelBuilder);

@@ -7,7 +7,7 @@ namespace OfficeAssetManager.Models
     {
         public Employee()
         {
-            AssetAssignments = new HashSet<AssetAssignment>();
+            Assets = new HashSet<Asset>();
         }
 
         public int EmployeeId { get; set; }
@@ -17,6 +17,6 @@ namespace OfficeAssetManager.Models
         public string LastName { get; set; } = null!;
         public int? SiteId { get; set; }
 
-        public virtual ICollection<AssetAssignment> AssetAssignments { get; set; }
+        public virtual ICollection<Asset> Assets { get; set; }
     }
 }

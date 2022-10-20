@@ -2,7 +2,7 @@
 
 namespace OfficeAssetManager.Repositories;
 
-public interface IEmployeeRepository
+public interface IEmployeeRepository 
 {
     IEnumerable<Employee> GetEmployees();
     Employee? GetEmployeeById(int employeeId);
