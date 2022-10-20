@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using OfficeAssetManager.Models;
+using OfficeAssetManager.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,7 @@ var config = new ConfigurationBuilder()
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddScoped(typeof(IEmployeeRepository), typeof(EmployeeRepository));
 builder.Services.AddDbContext<OfficeAssetManagementContext>(options =>
             options.UseSqlServer(config.GetConnectionString("OfficeAssetManagementContext")));
 builder.Services.AddSwaggerGen();
