@@ -18,11 +18,6 @@ public class EmployeeRepository : IEmployeeRepository
         return _context.Employees.ToList();
     }
 
-    public bool HasAssets(int employeeId)
-    {
-        return _context.Assets.Where(a => a.EmployeeId == employeeId).Any();
-    }
-
     public Employee? GetEmployeeById(int employeeId)
     {
         return _context.Employees.Find(employeeId);
