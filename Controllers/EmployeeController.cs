@@ -18,28 +18,28 @@ public class EmployeeController : ControllerBase
     }
 
     // GET: api/Employee/GetEmployeeById/{employeeId}
-    [HttpGet("GetEmployeeById/{employeeId}")]
-    public IActionResult GetEmployeeById(int employeeId)
+    [HttpGet("Get/{employeeId}")]
+    public IActionResult Get(int employeeId)
     {
-        //var query = from ee in _context.Employees
-        //            where ee.EmployeeId == employeeId
-        //            join dv in _context.DictionaryValues
-        //                on ee.SiteId equals dv.ValueId
-        //            select new EmployeeDTO
-        //            {
-        //                EmployeeId = ee.EmployeeId,
-        //                ExternalSystemId = ee.ExternalSystemId,
-        //                DisplayName = ee.DisplayName,
-        //                SiteName = dv.DisplayName
-        //            };
-
-        //IEnumerable<EmployeeDTO> result = query;
-
-        //return (query.Any()) ? Ok(result) : NoContent();
-
         Employee employee = _repository.GetEmployeeById(employeeId);
 
         return (employee == null) ? NoContent() : Ok(employee);
     }
 
+    // GET: api/Employee/DeleteEmployeeById/{employeeId}
+    [HttpDelete("DeleteEmployeeById/{employeeId}")]
+    public IActionResult Delete(int employeeId)
+    {
+        var employee = _repository.GetEmployeeById(employeeId);
+
+        if (employee == null)
+        {
+            return NotFound();
+        }
+        else
+        {
+            _repository.DeleteEmployee(employeeId);
+            return Ok();
+        }
+    }
 }
