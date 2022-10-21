@@ -20,9 +20,6 @@ namespace OfficeAssetManager.Models
         public virtual DbSet<Dictionary> Dictionaries { get; set; } = null!;
         public virtual DbSet<DictionaryValue> DictionaryValues { get; set; } = null!;
         public virtual DbSet<Employee> Employees { get; set; } = null!;
-        public virtual DbSet<TempAsset> TempAssets { get; set; } = null!;
-        public virtual DbSet<Tempdictionary> Tempdictionaries { get; set; } = null!;
-        public virtual DbSet<Tempdictionaryvalue> Tempdictionaryvalues { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -100,47 +97,6 @@ namespace OfficeAssetManager.Models
                 entity.Property(e => e.FirstName).HasMaxLength(75);
 
                 entity.Property(e => e.LastName).HasMaxLength(75);
-            });
-
-            modelBuilder.Entity<TempAsset>(entity =>
-            {
-                entity.HasNoKey();
-
-                entity.ToTable("tempAssets");
-
-                entity.Property(e => e.AddedBy).HasMaxLength(150);
-
-                entity.Property(e => e.Guid).HasColumnName("GUID");
-
-                entity.Property(e => e.RemovedBy).HasMaxLength(150);
-            });
-
-            modelBuilder.Entity<Tempdictionary>(entity =>
-            {
-                entity.HasNoKey();
-
-                entity.ToTable("tempdictionary");
-
-                entity.Property(e => e.DictionaryId)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("DictionaryID");
-
-                entity.Property(e => e.DisplayName).HasMaxLength(150);
-            });
-
-            modelBuilder.Entity<Tempdictionaryvalue>(entity =>
-            {
-                entity.HasNoKey();
-
-                entity.ToTable("tempdictionaryvalue");
-
-                entity.Property(e => e.DictionaryId).HasColumnName("DictionaryID");
-
-                entity.Property(e => e.DisplayName).HasMaxLength(200);
-
-                entity.Property(e => e.ValueId)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("ValueID");
             });
 
             OnModelCreatingPartial(modelBuilder);

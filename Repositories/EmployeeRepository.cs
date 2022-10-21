@@ -1,5 +1,6 @@
 ﻿using OfficeAssetManager.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 
 namespace OfficeAssetManager.Repositories;
 
@@ -15,6 +16,11 @@ public class EmployeeRepository : IEmployeeRepository
     public IEnumerable<Employee> GetEmployees()
     {
         return _context.Employees.ToList();
+    }
+
+    public bool HasAssets(int employeeId)
+    {
+        return _context.Assets.Where(a => a.EmployeeId == employeeId).Any();
     }
 
     public Employee? GetEmployeeById(int employeeId)
@@ -34,8 +40,23 @@ public class EmployeeRepository : IEmployeeRepository
 
     public void DeleteEmployee(int employeeId)
     {
+        // unmap any mapped assets.
+        List<Asset> assetsToUnassign = _context.Assets.Where(_a => _a.EmployeeId == employeeId).ToList();
+
+        if (assetsToUnassign.Count > 0)
+        {
+            assetsToUnassign.ForEach(a => a.EmployeeId = null);
+            Save();
+        }
+            
+        // delete employee
         Employee employee = _context.Employees.Find(employeeId);
-        _context.Employees.Remove(employee);
+        
+        if (employee != null)
+        {
+            _context.Employees.Remove(employee);
+            Save();
+        }
     }
 
     public void Save()
