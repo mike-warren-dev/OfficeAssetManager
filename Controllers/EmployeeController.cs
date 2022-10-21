@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OfficeAssetManager.Models;
 using OfficeAssetManager.Repositories;
+using System.Diagnostics;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -17,7 +18,7 @@ public class EmployeeController : ControllerBase
         _repository = repository;
     }
 
-    // GET: api/Employee/GetEmployeeById/{employeeId}
+    // GET: api/Employee/Get/{employeeId}
     [HttpGet("Get/{employeeId}")]
     public IActionResult Get(int employeeId)
     {
@@ -26,8 +27,8 @@ public class EmployeeController : ControllerBase
         return (employee == null) ? NoContent() : Ok(employee);
     }
 
-    // GET: api/Employee/DeleteEmployeeById/{employeeId}
-    [HttpDelete("DeleteEmployeeById/{employeeId}")]
+    // GET: api/Employee/Delete/{employeeId}
+    [HttpDelete("Delete/{employeeId}")]
     public IActionResult Delete(int employeeId)
     {
         var employee = _repository.GetEmployeeById(employeeId);
@@ -41,5 +42,14 @@ public class EmployeeController : ControllerBase
             _repository.DeleteEmployee(employeeId);
             return Ok();
         }
+    }
+
+    // GET: api/Employee/Insert
+    [HttpPost("Insert")]
+    public IActionResult Insert([FromBody][Bind("LastName,FirstName,ExternalSystemId,SiteId")] Employee employee)
+    {
+        _repository.InsertEmployee(employee);
+
+        return Ok();
     }
 }
