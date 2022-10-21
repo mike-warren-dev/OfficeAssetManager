@@ -25,12 +25,21 @@ public class EmployeeRepository : IEmployeeRepository
 
     public void InsertEmployee(Employee employee)
     {
+        //employee.EmployeeId = 0;
+        employee.FirstName = employee.FirstName.Trim();
+        employee.LastName = employee.LastName.Trim();
+        employee.DisplayName = $"{employee.FirstName} {employee.LastName}"; 
+        if (employee.ExternalSystemId != null && employee.ExternalSystemId < 1)
+            employee.ExternalSystemId = null;
+
         _context.Employees.Add(employee);
+        Save();
     }
 
     public void UpdateEmployee(Employee employee)
     {
         _context.Entry(employee).State = EntityState.Modified;
+        Save();
     }
 
     public void DeleteEmployee(int employeeId)

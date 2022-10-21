@@ -14,7 +14,6 @@ namespace OfficeAssetManager.Models
         public DateTime? AddedDate { get; set; }
         public string? RemovedBy { get; set; }
         public DateTime? RemovedDate { get; set; }
-
         public virtual Employee? Employee { get; set; }
     }
 }
